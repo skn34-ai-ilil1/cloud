@@ -127,6 +127,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR/'staticfiles' # Gunicorn과 사용할 정적파일 저장위치
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -136,3 +137,11 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# 로컬 pc 접속시에는 localhost로, 그 외에는 AWS 탄력적 ip주소를 ALLOWED_HOSTS로 사용
+import socket
+
+if socket.gethostname() == 'playdata':
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+else:
+    ALLOWED_HOSTS = ['3.35.243.144']
